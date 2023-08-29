@@ -1,0 +1,2 @@
+* Typescript
+* Graphql with nexus
