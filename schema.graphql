@@ -3,17 +3,34 @@
 
 
 type Activity {
-  average_watts: Int!
+  average_watts: Int
   distance: Float
   elapsed_time: Int!
   id: Int!
-  max_watts: Int!
+  max_watts: Int
   moving_time: Int!
   name: String!
   private: Boolean!
   sport_type: String!
 }
 
+type Mutation {
+  changeVisibility(visibilityUpdate: visibilityArgs!): updateVisibilityResponse
+  createActivity(average_watts: Int, distance: Int!, elapsed_time: Int!, max_watts: Int, moving_time: Int!, name: String!, private: Boolean!, sport_type: String!): Activity!
+}
+
 type Query {
-  ok: Boolean!
+  fileBasedActivities: [Activity]!
+  hardCodedActivity: [Activity]!
+  inMemoryDbActivities: [Activity]!
+}
+
+type updateVisibilityResponse {
+  error: Boolean!
+  message: String!
+}
+
+input visibilityArgs {
+  id: Int!
+  visible: Boolean!
 }

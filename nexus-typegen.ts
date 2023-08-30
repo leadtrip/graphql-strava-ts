@@ -4,7 +4,7 @@
  */
 
 
-
+import type { Context } from "./api/context"
 
 
 
@@ -14,6 +14,10 @@ declare global {
 }
 
 export interface NexusGenInputs {
+  visibilityArgs: { // input type
+    id: number; // Int!
+    visible: boolean; // Boolean!
+  }
 }
 
 export interface NexusGenEnums {
@@ -29,17 +33,22 @@ export interface NexusGenScalars {
 
 export interface NexusGenObjects {
   Activity: { // root type
-    average_watts: number; // Int!
+    average_watts?: number | null; // Int
     distance?: number | null; // Float
     elapsed_time: number; // Int!
     id: number; // Int!
-    max_watts: number; // Int!
+    max_watts?: number | null; // Int
     moving_time: number; // Int!
     name: string; // String!
     private: boolean; // Boolean!
     sport_type: string; // String!
   }
+  Mutation: {};
   Query: {};
+  updateVisibilityResponse: { // root type
+    error: boolean; // Boolean!
+    message: string; // String!
+  }
 }
 
 export interface NexusGenInterfaces {
@@ -54,18 +63,28 @@ export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars
 
 export interface NexusGenFieldTypes {
   Activity: { // field return type
-    average_watts: number; // Int!
+    average_watts: number | null; // Int
     distance: number | null; // Float
     elapsed_time: number; // Int!
     id: number; // Int!
-    max_watts: number; // Int!
+    max_watts: number | null; // Int
     moving_time: number; // Int!
     name: string; // String!
     private: boolean; // Boolean!
     sport_type: string; // String!
   }
+  Mutation: { // field return type
+    changeVisibility: NexusGenRootTypes['updateVisibilityResponse'] | null; // updateVisibilityResponse
+    createActivity: NexusGenRootTypes['Activity']; // Activity!
+  }
   Query: { // field return type
-    ok: boolean; // Boolean!
+    fileBasedActivities: Array<NexusGenRootTypes['Activity'] | null>; // [Activity]!
+    hardCodedActivity: Array<NexusGenRootTypes['Activity'] | null>; // [Activity]!
+    inMemoryDbActivities: Array<NexusGenRootTypes['Activity'] | null>; // [Activity]!
+  }
+  updateVisibilityResponse: { // field return type
+    error: boolean; // Boolean!
+    message: string; // String!
   }
 }
 
@@ -81,12 +100,37 @@ export interface NexusGenFieldTypeNames {
     private: 'Boolean'
     sport_type: 'String'
   }
+  Mutation: { // field return type name
+    changeVisibility: 'updateVisibilityResponse'
+    createActivity: 'Activity'
+  }
   Query: { // field return type name
-    ok: 'Boolean'
+    fileBasedActivities: 'Activity'
+    hardCodedActivity: 'Activity'
+    inMemoryDbActivities: 'Activity'
+  }
+  updateVisibilityResponse: { // field return type name
+    error: 'Boolean'
+    message: 'String'
   }
 }
 
 export interface NexusGenArgTypes {
+  Mutation: {
+    changeVisibility: { // args
+      visibilityUpdate: NexusGenInputs['visibilityArgs']; // visibilityArgs!
+    }
+    createActivity: { // args
+      average_watts?: number | null; // Int
+      distance: number; // Int!
+      elapsed_time: number; // Int!
+      max_watts?: number | null; // Int
+      moving_time: number; // Int!
+      name: string; // String!
+      private: boolean; // Boolean!
+      sport_type: string; // String!
+    }
+  }
 }
 
 export interface NexusGenAbstractTypeMembers {
@@ -97,7 +141,7 @@ export interface NexusGenTypeInterfaces {
 
 export type NexusGenObjectNames = keyof NexusGenObjects;
 
-export type NexusGenInputNames = never;
+export type NexusGenInputNames = keyof NexusGenInputs;
 
 export type NexusGenEnumNames = never;
 
@@ -120,7 +164,7 @@ export type NexusGenFeaturesConfig = {
 }
 
 export interface NexusGenTypes {
-  context: any;
+  context: Context;
   inputTypes: NexusGenInputs;
   rootTypes: NexusGenRootTypes;
   inputTypeShapes: NexusGenInputs & NexusGenEnums & NexusGenScalars;
